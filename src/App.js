@@ -21,7 +21,6 @@ class App extends Component {
   }
 
   render() { 
-    console.log(this.state.cards);
     return ( <div>
       <Topbar />
       <Latestpost />
