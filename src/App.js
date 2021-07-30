@@ -1,25 +1,33 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import Topbar from './components/topbar.js';
+import Latestpost from './components/latestpost.js';
+import Card from './components/card.js';
+import axios from 'axios';
 import './App.css';
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { 
+      cards: [],
+      loader: true
+    }
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  componentDidMount () {
+    axios.get("https://api.edyoda.com/v1/blog/")
+    .then(res => {
+      this.setState({cards: res.data, loader: false})
+    })
+  }
+
+  render() { 
+    console.log(this.state.cards);
+    return ( <div>
+      <Topbar />
+      <Latestpost />
+      <div id="cards">{!this.state.loader ? this.state.cards.map((v, i) => <Card {...v} key={i} />) : <h2>Loading..</h2>}</div>
+    </div> );
+  }
 }
-
+ 
 export default App;
